@@ -1,0 +1,10 @@
+{
+  "cagr": 0.164604,
+  "volatility": 0.135,
+  "sharpe_ratio": 1.12,
+  "sortino_ratio": 1.48,
+  "calmar_ratio": 0.91,
+  "max_drawdown": 0.21,
+  "positive_months": 8,
+  "negative_months": 3
+}
