@@ -6,6 +6,11 @@ Related backend/research repo: https://github.com/Liam-Son/NOW-index
 
 A polished, open-source quantitative finance landing experience for the proprietary NOW Index. The project is designed for GitHub Pages deployment and is structured to support future API-backed live data integration.
 
+## Related Repositories
+
+- [NOW-index](https://github.com/Liam-Son/NOW-index) — core quant ranking engine, scoring framework, and API foundation
+- [Quant_NOW Performance](https://github.com/Liam-Son/Quant_NOW_Performance) — public performance dashboard and investment simulator for the NOW Index
+
 ## Overview
 
 Quant_NOW Performance answers a simple question: if you invested in the NOW Index, how much would your portfolio be worth today? It brings together historical performance, benchmark comparisons, risk analytics, and an investment growth calculator.
