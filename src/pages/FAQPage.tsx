@@ -5,6 +5,16 @@ const faqs = [
       'The NOW Index is a proprietary performance benchmark designed to highlight how wealth compounds over time with disciplined, rules-based portfolio exposure.',
   },
   {
+    question: 'What does a NOW Score of 0–100 mean?',
+    answer:
+      'The NOW Score is a composite ranking from 0 to 100. Higher scores indicate a stronger relative position within the ranking universe based on the weighted factors used by the model. It is a comparative signal, not a direct buy recommendation.',
+  },
+  {
+    question: 'If a stock is ranked highly, should I buy it?',
+    answer:
+      'Not automatically. A strong score suggests the stock ranks well on the composite model, but you should still inspect the factor mix, valuation, risk profile, and your own portfolio goals before making a decision. The score is a decision-support tool, not financial advice.',
+  },
+  {
     question: 'How is CAGR calculated?',
     answer:
       'CAGR is calculated using the total return over the full investment period and annualized by the number of years between the start and end dates.',

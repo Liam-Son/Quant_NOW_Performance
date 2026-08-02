@@ -1,42 +1,30 @@
+import { useEffect, useState } from 'react';
 import { BenchmarkTable } from '../components/BenchmarkTable';
 import { PerformanceChart } from '../components/PerformanceChart';
+import { getPerformanceSnapshot } from '../services/nowDataService';
+import type { PerformanceSnapshot } from '../types';
 
-const riskMetrics = [
-  ['Volatility', '14.2%'],
-  ['Sharpe Ratio', '1.12'],
-  ['Sortino Ratio', '1.48'],
-  ['Calmar Ratio', '0.91'],
-  ['Maximum Drawdown', '-21.0%'],
-  ['Downside Deviation', '7.6%'],
-  ['Win Rate', '63%'],
-  ['Positive Months', '8'],
-  ['Negative Months', '3'],
-  ['Average Monthly Return', '+1.2%'],
-  ['Best Month', '+7.4%'],
-  ['Worst Month', '-5.1%'],
-];
+const heatmap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 export function PerformancePage() {
-  const stats = [
-    ['Current Return', '+15.4%'],
-    ['Daily Return', '+0.8%'],
-    ['Weekly Return', '+1.1%'],
-    ['Monthly Return', '+2.2%'],
-    ['Quarterly Return', '+4.7%'],
-    ['Yearly Return', '+14.4%'],
-    ['3-Year CAGR', '+11.9%'],
-    ['5-Year CAGR', '+13.2%'],
-    ['Since Inception CAGR', '+13.8%'],
-  ];
+  const [snapshot, setSnapshot] = useState<PerformanceSnapshot>({
+    stats: [],
+    riskMetrics: [],
+    narrative: [],
+  });
 
-  const heatmap = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  useEffect(() => {
+    getPerformanceSnapshot()
+      .then((result) => setSnapshot(result))
+      .catch(() => setSnapshot({ stats: [], riskMetrics: [], narrative: [] }));
+  }, []);
 
   return (
     <div className="space-y-6">
       <section className="card p-6">
         <h2 className="text-2xl font-semibold">Performance Dashboard</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stats.map(([label, value]) => (
+          {snapshot.stats.map(([label, value]) => (
             <div key={label} className="rounded-xl border border-slate-800 bg-slate-950/80 p-4">
               <p className="metric-label">{label}</p>
               <p className="mt-2 text-xl font-semibold text-white">{value}</p>
@@ -50,7 +38,7 @@ export function PerformancePage() {
       <section className="card p-6">
         <h3 className="text-xl font-semibold">Risk Metrics</h3>
         <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {riskMetrics.map(([label, value]) => (
+          {snapshot.riskMetrics.map(([label, value]) => (
             <div key={label} className="rounded-xl border border-slate-800 bg-slate-950/80 p-4">
               <p className="metric-label">{label}</p>
               <p className="mt-2 text-lg font-semibold text-white">{value}</p>
@@ -69,9 +57,11 @@ export function PerformancePage() {
           </div>
         </div>
         <div className="card p-6">
-          <h3 className="text-xl font-semibold">Risk vs Return Scatter</h3>
-          <div className="mt-4 rounded-xl border border-slate-800 bg-slate-950/80 p-4 text-slate-300">
-            The scatter framework highlights higher-return assets with greater dispersion in annualized volatility, with the NOW Index positioned near the efficient frontier.
+          <h3 className="text-xl font-semibold">Interpretation</h3>
+          <div className="mt-4 space-y-3 text-slate-300">
+            {snapshot.narrative.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
           </div>
         </div>
       </section>
