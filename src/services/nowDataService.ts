@@ -30,7 +30,6 @@ export async function getPerformanceSeries(): Promise<PerformancePoint[]> {
 }
 
 export async function getBenchmarkMetrics(): Promise<BenchmarkMetric[]> {
-  const payload = await readJson<{ returns: Array<{ from: string; to: string; return: number }> }>(returnsDataUrl);
   const metricsPayload = await readJson<{ cagr: number; volatility: number; sharpe_ratio: number; sortino_ratio: number; calmar_ratio: number; max_drawdown: number }>(metricsDataUrl);
 
   return [
