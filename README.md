@@ -2,6 +2,8 @@
 
 Live site: https://liam-son.github.io/Quant_NOW_Performance/
 
+Related backend/research repo: https://github.com/Liam-Son/NOW-index
+
 A polished, open-source quantitative finance landing experience for the proprietary NOW Index. The project is designed for GitHub Pages deployment and is structured to support future API-backed live data integration.
 
 ## Overview
