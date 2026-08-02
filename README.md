@@ -1,5 +1,7 @@
 # Quant_NOW Performance
 
+Live site: https://liam-son.github.io/Quant_NOW_Performance/
+
 A polished, open-source quantitative finance landing experience for the proprietary NOW Index. The project is designed for GitHub Pages deployment and is structured to support future API-backed live data integration.
 
 ## Overview
@@ -30,6 +32,8 @@ npm run preview
 ```
 
 ## Deployment
+
+Open the live site here: https://liam-son.github.io/Quant_NOW_Performance/
 
 This project is configured for GitHub Pages via a Vite base path and a GitHub Actions workflow in `.github/workflows/deploy-pages.yml`.
 
