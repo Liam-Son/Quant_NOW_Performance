@@ -1,7 +1,6 @@
 import type { BenchmarkMetric, Metric, PerformancePoint } from '../types';
 
 const nowIndexDataUrl = './data/now_index.json';
-const returnsDataUrl = './data/returns.json';
 const metricsDataUrl = './data/metrics.json';
 
 async function readJson<T>(url: string): Promise<T> {
