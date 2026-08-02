@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { PerformanceChart } from '../components/PerformanceChart';
 import { getDashboardMetrics } from '../services/nowDataService';
@@ -42,7 +43,7 @@ export function HomePage() {
           <div className="metric-label">Investment Growth Snapshot</div>
           <div className="mt-4 text-4xl font-bold text-sky-400">$51,524</div>
           <p className="mt-2 text-slate-300">If you invested $10,000 in the NOW Index on Jan 1, 2021, your portfolio would be worth about $51,524 today.</p>
-          <button className="mt-4 rounded-full bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950">View Calculator</button>
+          <Link to="/calculator" className="mt-4 inline-flex rounded-full bg-sky-500 px-4 py-2 text-sm font-medium text-slate-950">View Calculator</Link>
         </div>
       </section>
 
