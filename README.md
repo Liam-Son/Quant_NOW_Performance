@@ -39,40 +39,58 @@ This is a **fixed, illustrative example value** hardcoded in `src/pages/HomePage
 
 ### 2. The Calculator page (interactive, dynamic)
 
-The Calculator page (`src/pages/CalculatorPage.tsx`) uses the `calculateGrowthScenario()` function in `src/utils/finance.ts`. This is the real, live calculation:
+The Calculator page (`src/pages/CalculatorPage.tsx`) uses the `calculateActualGrowth()` function in `src/utils/finance.ts`. This is the real, live calculation and it is driven by the **actual NOW Index price series** from `data/now_index.json`.
 
-**Formula (step by step):**
+**Step 1 — Load the index series:**
 
-1. **Time elapsed** — compute the years between the chosen investment date and today:
-   ```
-   years = (today − startDate) / 365.25        // days-based, minimum 0.01
-   ```
-2. **Convert to months** — the model compounds **monthly**:
-   ```
-   months = max(round(years × 12), 1)
-   ```
-3. **Monthly rate** — the annual return rate is converted to an equivalent monthly rate:
-   ```
-   monthlyRate = (1 + annualRate)^(1/12) − 1
-   ```
-4. **Monthly compounding loop** — for each month, the portfolio grows by the monthly rate; an optional monthly contribution is added at the **end** of each month **except the last**:
-   ```
-   portfolioValue = initialInvestment
-   for month in 1..months:
-       portfolioValue *= (1 + monthlyRate)
-       if month < months:
-           portfolioValue += monthlyContribution
-   ```
+On mount, the page loads the NOW Index historical series via `getPerformanceSeries()` (from `src/services/nowDataService.ts`). The series looks like:
 
-**Outputs returned:**
+```
+2020-01-01 → 100.0
+2020-06-01 → 108.9
+2021-01-01 → 123.4
+2022-01-01 → 150.2
+2023-01-01 → 183.7
+2024-01-01 → 214.6
+2025-01-01 → 249.5
+```
+
+**Step 2 — Determine the index value at the investment date:**
+
+The helper `interpolateIndexValue()` finds the NOW Index level on the chosen investment date:
+
+- If the date falls **between** two data points, the index value is **linearly interpolated** between the surrounding points.
+- If the date is **before** the first point, the first point's value is used.
+- If the date is **after** the last point, the last point's value is used (and the result is marked as *projected*).
+
+**Step 3 — Compute the growth ratio:**
+
+```
+growthRatio = latestIndexValue / indexValueAtInvestmentDate
+```
+
+**Step 4 — Apply growth to the investment:**
+
+```
+portfolioValue = initialInvestment × growthRatio
+```
+
+**Monthly contributions** (if any) are then added one-by-one: each contribution is grown from its own contribution date using the same `latestIndexValue / contributionDateIndexValue` ratio, and contributions that fall after the last data point are stopped.
+
+**Step 5 — Return outputs:**
 
 | Output | Formula |
 |--------|---------|
-| `portfolioValue` | Ending compounded value (the headline "estimated output") |
-| `totalContributions` | `initialInvestment + monthlyContribution × months` |
+| `portfolioValue` | Ending value = initial investment + contributions, each grown by the actual index ratio |
+| `totalContributions` | `initialInvestment + monthlyContribution × monthsElapsed` |
 | `profit` | `portfolioValue − totalContributions` |
 | `totalReturn` | `profit / totalContributions × 100` (%) |
 | `cagr` | `((portfolioValue / initialInvestment)^(1/years) − 1) × 100` (%) |
+| `indexValueAtStart` | The interpolated NOW Index value on the investment date |
+| `indexValueNow` | The latest NOW Index value |
+| `isProjected` | `true` when the investment date is after the last data point (uses series CAGR for forward projection) |
+
+> If the investment date is **after** the latest data point in the series, the calculator falls back to `calculateGrowthScenario()` using the series CAGR to project forward, and marks the result with a **"Projected"** badge.
 
 **Default inputs (as shown on the Calculator page):**
 
@@ -81,11 +99,10 @@ The Calculator page (`src/pages/CalculatorPage.tsx`) uses the `calculateGrowthSc
 | Initial investment | $10,000 |
 | Monthly contribution | $0 |
 | Investment date | 2021-01-01 |
-| Annual rate | **13.8%** |
 
-### 3. Where the 13.8% annual rate comes from
+### 3. Forward-projection fallback
 
-The default annual rate (**13.8%**) is the **"Since Inception CAGR"** figure shown on the Performance Dashboard page (`src/pages/PerformancePage.tsx`). It is the representative annualized return used for the simulator projection.
+When the chosen investment date is beyond the most recent point in the NOW Index series, the calculator uses the **"Since Inception CAGR"** of the series (computed from the first and last index values) to project future growth with the same monthly-compounding logic as the original `calculateGrowthScenario()` function.
 
 ### 4. Where the underlying data comes from
 
