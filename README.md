@@ -8,6 +8,30 @@ A polished, open-source quantitative finance landing experience for the propriet
 
 The NOW Score shown on the site is a composite ranking from 0 to 100. A higher score means a stronger relative ranking within the model’s peer set based on its weighted factors. It is a comparative, research-oriented indicator rather than a direct buy signal or financial advice.
 
+## 🖥️ Live Demo
+
+Try the interactive dashboard right now — no signup required:
+
+<p align="center">
+<a href="https://liam-son.github.io/Quant_NOW_Performance/">
+    <img src="docs/screenshot.svg" alt="Quant_NOW Performance dashboard" width="100%" />
+  </a>
+  <br/>
+  <sub><a href="https://liam-son.github.io/Quant_NOW_Performance/">Launch the live dashboard →</a></sub>
+</p>
+
+The dashboard includes:
+
+- **Home** — dashboard metrics + interactive performance chart
+- **Performance** — risk analytics, CAGR, drawdown, benchmark comparison
+- **Calculator** — interactive investment growth simulator using the actual NOW Index series
+- **Methodology** — how the NOW Score is constructed and how to read it
+- **About / FAQ** — scope, disclaimers, and common questions
+
+> 📸 **Preview note:** `docs/screenshot.svg` is a lightweight placeholder preview
+> of the dashboard. Replace it with a real capture of the live site (e.g.,
+> `docs/screenshot.png`) to show the actual UI on the repo preview.
+
 ## ❓ How to Read the NOW Score
 
 > **There is no single “magic number” to buy.** The NOW Score is a *relative composite ranking*, not an absolute value, price target, or buy/sell signal.
@@ -176,11 +200,33 @@ The workflow runs on a schedule every hour and can also be triggered manually or
 
 ## Future Roadmap
 
-- Live API integration
-- Authentication and personal portfolios
-- AI investment insights
-- Multiple proprietary indices
-- REST and GraphQL API extensions
+> 🔎 **Data status:** The dashboard currently renders **representative/demo data**
+> (see `data/now_index.json`, `"source": "NOW Index Demo Data"`). The formulas,
+> charting, and risk analytics are the exact logic that will run on live data —
+> only the underlying series is simulated. The ranked data itself is produced by
+> the [NOW-index engine](https://github.com/Liam-Son/NOW-index) (see its
+> [Data Sources](https://github.com/Liam-Son/NOW-index/blob/main/docs/DATA_SOURCES.md)
+> and [Backtesting](https://github.com/Liam-Son/NOW-index/blob/main/docs/BACKTESTING.md)
+> docs).
+
+### Short-term (ship a credible core)
+
+- [ ] Wire the dashboard to the live NOW-index API / static export
+  (`scripts/update_now_data.py` → real index series)
+- [ ] Add a validation snapshot of the published data to the repo
+- [ ] Add a `docs/screenshot.png` for the README preview
+- [ ] Automate the data refresh in CI (GitHub Actions) so metrics never go stale
+
+### Medium-term
+
+- [ ] Live API integration (REST / GraphQL)
+- [ ] Authentication and personal portfolios
+- [ ] AI investment insights
+
+### Long-term
+
+- [ ] Multiple proprietary indices
+- [ ] Full historical accuracy report (see NOW-index backtesting)
 
 ## License
 
